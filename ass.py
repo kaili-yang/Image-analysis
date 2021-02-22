@@ -5,7 +5,7 @@
     Python Version: 3.8.6
     IDE: VS Code
 '''
-
+import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -60,15 +60,56 @@ def targetObjectes(data):
     
 # Task5: Detect object pixels and perform connected-components labeling of connected pixels
 def labelConnectedPixel(data):
-    parent = []
+    # Negate the binary image
     data_negate = data
     for i in range(len(data)):
         for j in range(len(data[i])):
             data_negate[i][j] = -1 if data[i][j] >0 else 0
-    print(data_negate)
+    # Load two successive rows
+    result = initBlock(data_negate)
+    baseBlock = result[0]
+    index = result[1]
+    for i in range(1, len(baseBlock)):
+        for j in range(1, len(baseBlock[i])):
+            
     
+                    
     
-    
+def initBlock(data_label):
+    index = 1
+    data_connect = data_label
+    # top left point
+    if data_label[0][0] == 0:
+        data_connect[0][0] = false
+    else:
+        data_label[0][0] = index
+        data_connect[0][0] = true
+        
+    # bottom left point
+    if data_label[1][0] == 0:
+        data_connect[1][0] = false
+    else:
+        data_label[1][0] = index
+        data_connect[1][0] = true
+        
+    # bottom right point
+    if data_label[1][1] == 0:
+        data_connect[1][1] = false
+    else:
+        data_connect[1][1] = true
+        if data_label[0][0] == 1 && data_label[1][0] == 0 && data_label[0][1] == 0:
+            index = index + 1
+            data_connect[1][1] = index
+        else:
+            data_connect[1][1] = index
+            
+    # top right point
+    if data_label[0][1] == 0:
+        data_connect[0][1] = false
+    else:
+        data_label[0][1] = index
+        data_connect[0][1] = true
+    return [data_label, index]
     
 init()
 inputImage()
